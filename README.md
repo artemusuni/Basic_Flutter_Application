@@ -1,16 +1,7 @@
 # lab1_from_zero
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I think project I am creating a basic Flutter application which will have:
+  1. 2 pages and a navigation bar at the bottom
+  2. A button on the home page which can be pressed to change color from red to green and vice versa.
+  3. Light/Dark theme which will also use shared preferences.
+  4. NOT IMPLEMENTED YET!, A custom startup animation.
