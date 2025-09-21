@@ -67,7 +67,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
             label: "Home",       //Text label under the icon
           ),
           NavigationDestination(      //Destination 1
-            icon: Icon(),
+            icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
             label: "Settings",
           ),
