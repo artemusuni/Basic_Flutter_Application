@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lab 1',
+      title: 'Lab 1 - Two Pages + Toggle Button',
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: Colors.indigo,
@@ -78,20 +78,50 @@ class _HomeScaffoldState extends State<HomeScaffold> {
   }
 }
 
-class HomePage extends StatelessWidget {  //for now it will be stateless, maybe later I will change that
+class HomePage extends StatefulWidget {  //stateful because it will be changing
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+
+} //HomePage
+
+class _HomePageState extends State<HomePage> {   //Holds the toggle state
+  bool _isOn = false;                    //false = red, true = green
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Home Page",
-        style: TextStyle(fontSize: 22),       //slightly larget font
+    final Color color = _isOn ? Colors.green : Colors.red;   // Computes the state of the _isOn and changes color 
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedContainer(      //this should be similar to a container, but more smooth
+            duration: const Duration(milliseconds: 250),
+            width: 160,
+            height: 160,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(20), //a bit round corners
+            ),
+          ),
+          const SizedBox(height: 20),  //adding vertical space between square and button
+          FilledButton.tonal(
+            onPressed: () {
+              setState(() { _isOn = ! _isOn;});
+            },
+            child: Text(_isOn     //Button label depends on current state of _isOn
+              ? "Turn OFF (Red)"
+              : "Turn ON (Green)"),
+            ),
+        ],
       ),
     );
   }
-} //HomePage
+}
 
+
+//This pag is currently only a placeholder!!
 class SettingsPage extends StatelessWidget {    //another stateless page
   const SettingsPage({super.key});
 
