@@ -1,30 +1,59 @@
 import 'package:flutter/material.dart'; //I am importing the material library
+import "package:shared_preferences/shared_preferences.dart";   //key-value storagefor small settings
+
+
 
 void main() => runApp(const MyApp());  //The entry point to my Dart program
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {   //I make it statefull because it will be changing themes
 
   const MyApp({super.key});    //Constructor passes 'super.key' as optional key
                               //to the base class for identity.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lab 1 - Two Pages + Toggle Button',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.indigo,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.indigo,
-        brightness: Brightness.dark,
-      ),
-      home: const HomeScaffold(),
-
-    );
+    
+    @override
+    State<MyApp> createState() => _MyAppState();
 
   }
 
+} //MyApp
+
+class _MyAppState extends State<MyApp> {  //Holds the App-level state
+  ThemeMode _themeMode = ThemeMode.system;           //Default to system theme
+
+  @override
+  void initState() {    //Runs once when the state is first created
+    super.initState();
+    _loadThemeFromPrefs(); //Load previously saved theme mode
+  }
+
+  Future<void> _loadThemeFromPrefs() async {  //Async function: read the saved theme from storage
+    final prefs = await SharedPreferences.getInstance();  //obtain the shared preferences
+    final saved = prefs.getString("themeMode") ?? "system"; //try reading the key for theme, fallback to "system" if missing
+    setState(() {
+      _themeMode = switch (saved) {  //map the stored string bck to a ThemeMode value
+        "light" => ThemeMode.light,
+        "dark" => ThemeMode.dark,
+        _ => ThemeMode.system,
+      };  
+    });
+  }
+
+  Future<void> _savedThemeToPrefs(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();  //get the prefernce handle
+    final asString = switch (mode) {   //conver enum to string for storage
+      ThemeMode.light => "light",
+      ThemeMode.dark => "dark",
+      ThemeMode.system => "system",
+    };
+    await prefs.setString("themeMode", asString);   //Write to disk asynchronously.
+  }
+
+  void _setTheme() {
+//WORK STILL IN PROGRESS
+
+  }
 }
 
 class HomeScaffold extends StatefulWidget {   //Am using a stateful widget because it will chage the based on idex
