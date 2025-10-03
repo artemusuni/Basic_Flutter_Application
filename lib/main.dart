@@ -16,11 +16,18 @@ class MyApp extends StatefulWidget {   //I make it statefull because it will be 
 
 class _MyAppState extends State<MyApp> {  //Holds the App-level state
   ThemeMode _themeMode = ThemeMode.system;           //Default to system theme
+  bool _showSplash = true;  //shows animated splash
 
   @override
   void initState() {    //Runs once when the state is first created
     super.initState();
     _loadThemeFromPrefs(); //Load previously saved theme mode
+
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        _showSplash = false;
+      });
+    });
   }
 
   Future<void> _loadThemeFromPrefs() async {  //Async function: read the saved theme from storage
@@ -65,10 +72,12 @@ class _MyAppState extends State<MyApp> {  //Holds the App-level state
         colorSchemeSeed: Colors.indigo,
         brightness: Brightness.dark,
       ),
-      home: HomeScaffold(
-        themeMode: _themeMode,
-        onThemeChanged: _setTheme,
-      ),
+      home: _showSplash
+        ? const SplashScreen() //the animation
+        : HomeScaffold(
+            themeMode: _themeMode,
+            onThemeChanged: _setTheme,
+        ),
     );
 
   }
@@ -204,4 +213,41 @@ class SettingsPage extends StatelessWidget {    //another stateless page
       ),
     );
   }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.indigo,   //Splash background
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            FlutterLogo(size: 120),   //Flutter logo
+            SizedBox(height: 20),
+            Text(
+              "Loading Lab 1...",
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 30),
+            CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 3,
+            ),  //loaiding spinner
+          ],
+        )
+      ),
+    );
+  }
+
+
+
+
 }
